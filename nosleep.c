@@ -12,19 +12,25 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/* Copyright 2011 Andrew E. Schulman */
 
 #include <argp.h>
 #include <stdlib.h>
 
 /* Help */
-const char *argp_program_version = "nosleep v1.0";
-const char *argp_program_bug_address = "Andrew Schulman <schulman.andrew@epa.gov>";
+const char *argp_program_version = "nosleep v1.0 | Copyright 2011 Andrew E. Schulman";
+const char *argp_program_bug_address = "the Cygwin mailing list <cygwin@cygwin.com>";
 static char doc[] = "Run a command while inhibiting computer sleep or hibernation.";
 static struct argp argp = { 0, 0, 0, doc };
 
 int main(int argc, char *argv[]) {
 
   argp_parse(&argp, argc, argv, 0, 0, 0);
+
+  /* Inhibit sleep/hibernation */
+  /* Start child process */
+  /* Wait for child to exit */
+  /* Restore power options if necessary */
 
   exit(0);
 }
