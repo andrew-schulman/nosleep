@@ -1,0 +1,103 @@
+.TH NOSLEEP 1 "Sep 19, 2011"
+
+
+.SH NAME
+nosleep - Run a program while inhibiting computer sleep or hibernation
+
+
+.SH SYNOPSIS
+.B nosleep
+.I command
+.RI [ args ]
+
+
+.SH DESCRIPTION
+.B nosleep
+runs the supplied
+.IR command ,
+while inhibiting the computer from sleeping or hibernating until the command
+finishes executing.
+
+"Inhibiting sleep" does not mean that the computer is guaranteed not to go to
+sleep.  By default, it just prevents the computer from automatically putting
+itself to sleep during periods of no user input.  If the user closes the laptop
+lid or presses the power button, the computer will still behave as its power
+management plan dictates--typically, by going to sleep, hibernating, or shutting
+down.
+
+For many applications, inhibiting idle sleep is sufficient.  When it's not,
+options are available, below, to more aggressively inhibit sleep or hibernation.
+But before you use any of them, you must read the:
+
+
+.SH WARNINGS AND DISCLAIMER
+Aggressively inhibiting sleep or hibernation carries the following disadvantages
+and risks:
+
+.TP
+1.
+If the host is running on battery, preventing sleep or hibernation could
+cause it to run out of power and have an unclean shutdown, potentially causing
+data loss.
+
+.TP
+2.
+Users may become confused or frustrated if the usual sleep behavior that they
+expect, such as going to sleep when the laptop lid is closed, stops working or
+only works some of the time.
+
+.TP
+3.
+.B nosleep
+still can't guarantee that the
+.I command
+will complete, since it can't prevent users or other processes from shutting
+down the host.
+
+.LP
+The author disclaims all responsibility for any losses you may incur by using
+the more aggressive options below.
+
+
+.SH OPTIONS
+.TP
+--awaymode
+Make the computer go into "away mode" when it would normally go to sleep.
+To the user the computer will appear to be asleep, but the
+.I command
+will continue executing.  The Windows documentation[1] says: "Applications that
+do not require critical background processing or that run on portable computers
+should not enable away mode because it prevents the system from conserving power
+by entering true sleep."
+
+.TP
+--powerplan
+Activate a temporary power management plan that prevents sleep and
+hibernation, even under typical events such as closing the laptop lid or
+pressing the power button.  The original power plan will be restored when the
+.I command
+finishes executing.  This is the most aggressive option.  All of the WARNINGS
+above apply, and in addition, the temporary power scheme will be left in place
+if 
+.B nosleep
+is killed before
+.I command
+completes.
+
+
+.SH EXAMPLE
+.IP
+nosleep rsync dir1 dir2
+.LP
+will run the rsync command, inhibiting computer sleep until rsync exits.
+
+.SH BUGS
+Please send bug reports to the Cygwin mailing list <cygwin@cygwin.com>.
+
+.SH REFERENCES
+.TP
+[1]
+http://msdn.microsoft.com/en-us/library/aa373208(VS.85).aspx
+
+.SH AUTHOR
+Andrew E. Schulman <schulman.andrew@epa.gov>
