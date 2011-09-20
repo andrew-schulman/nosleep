@@ -1,4 +1,4 @@
-.TH NOSLEEP 1 "Sep 19, 2011"
+.TH NOSLEEP 1 "Sep 20, 2011" "" "CYGWIN"
 
 
 .SH NAME
@@ -7,37 +7,42 @@ nosleep - Run a program while inhibiting computer sleep or hibernation
 
 .SH SYNOPSIS
 .B nosleep
+[--awaymode|--powerplan]
 .I command
 .RI [ args ]
 
 
 .SH DESCRIPTION
 .B nosleep
-runs the supplied
-.IR command ,
+runs the supplied command,
+.I command 
+.RI [ args ],
 while inhibiting the computer from sleeping or hibernating until the command
 finishes executing.
 
-"Inhibiting sleep" does not mean that the computer is guaranteed not to go to
-sleep.  By default, it just prevents the computer from automatically putting
-itself to sleep during periods of no user input.  If the user closes the laptop
-lid or presses the power button, the computer will still behave as its power
-management plan dictates--typically, by going to sleep, hibernating, or shutting
-down.
+.B nosleep
+does not guarantee that the computer won't go to sleep.  By default, it just
+prevents the computer from automatically putting itself to sleep during periods
+of no user input (although it still allows the display to turn off).  If the
+user closes the laptop lid or presses the power button, the computer will still
+behave as its power management plan dictates--typically by going to sleep,
+hibernating, or shutting down.
 
-For many applications, inhibiting idle sleep is sufficient.  When it's not,
-options are available, below, to more aggressively inhibit sleep or hibernation.
-But before you use any of them, you must read the:
+Inhibiting idle sleep is a safe mode of operation, since it won't prevent the
+computer from shutting down if needs to to conserve power, and for many
+applications this mode is sufficient.  When it's not, options are available,
+below, to more aggressively inhibit sleep or hibernation.  But before you use
+any of them, you must read the:
 
 
 .SH WARNINGS AND DISCLAIMER
-Aggressively inhibiting sleep or hibernation carries the following disadvantages
-and risks:
+Aggressively inhibiting sleep or hibernation carries at least the following
+disadvantages and risks:
 
 .TP
 1.
 If the host is running on battery, preventing sleep or hibernation could
-cause it to run out of power and have an unclean shutdown, potentially causing
+cause it to run out of power and shut down uncleanly, potentially causing
 data loss.
 
 .TP
@@ -52,7 +57,7 @@ only works some of the time.
 still can't guarantee that the
 .I command
 will complete, since it can't prevent users or other processes from shutting
-down the host.
+down the host.  For example, a user who tries and fails to put the computer to sleep may decide to shut it down instead.
 
 .LP
 The author disclaims all responsibility for any losses you may incur by using
@@ -63,12 +68,15 @@ the more aggressive options below.
 .TP
 --awaymode
 Make the computer go into "away mode" when it would normally go to sleep.
-To the user the computer will appear to be asleep, but the
+The computer will appear to be asleep, but the
 .I command
 will continue executing.  The Windows documentation[1] says: "Applications that
 do not require critical background processing or that run on portable computers
 should not enable away mode because it prevents the system from conserving power
-by entering true sleep."
+by entering true sleep."  Use your power for good, not evil.
+
+On Windows Server 2003 and Windows XP/2000, away mode is not supported and this
+option will have no effect.
 
 .TP
 --powerplan
@@ -76,20 +84,25 @@ Activate a temporary power management plan that prevents sleep and
 hibernation, even under typical events such as closing the laptop lid or
 pressing the power button.  The original power plan will be restored when the
 .I command
-finishes executing.  This is the most aggressive option.  All of the WARNINGS
-above apply, and in addition, the temporary power scheme will be left in place
-if 
+finishes executing.  This is the most aggressive option.  In addition to the
+warnings above, this option carries the additional risk that the temporary power
+scheme will be left in place if
 .B nosleep
 is killed before
 .I command
-completes.
+completes, for example if the power is interrupted (battery ran out?).
 
+The --powerplan option may fail if you don't have sufficient administrative
+privileges.  In that case
+.B nosleep
+will emit an error message but continue running in its default mode.
 
 .SH EXAMPLE
 .IP
 nosleep rsync dir1 dir2
 .LP
-will run the rsync command, inhibiting computer sleep until rsync exits.
+will run rsync to synchronize dir1 and dir2, inhibiting computer sleep until
+rsync exits.
 
 .SH BUGS
 Please send bug reports to the Cygwin mailing list <cygwin@cygwin.com>.
