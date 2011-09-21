@@ -14,22 +14,48 @@
 */
 /* Copyright 2011 Andrew E. Schulman */
 
-/*#include <argp.h>*/
+#include <argp.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <windows.h>
 
-/* Help */
+/* Program docs */
 const char *argp_program_version = "nosleep v1.0 | Copyright 2011 Andrew E. Schulman";
 const char *argp_program_bug_address = "the Cygwin mailing list <cygwin@cygwin.com>";
 static char doc[] = "Run a command while inhibiting computer sleep or hibernation.";
-/*static struct argp argp = { 0, 0, 0, doc };*/
+static char args_doc[] = "command [args]";	/* non-option arguments */
 
-int main(int argc, char *argv[]) {
+/* Options */
+static struct argp_option options[] = {
+  {"awaymode",  'a', 0, 0,  "Substitute away mode for sleep mode" },
+  {"display",   'd', 0, 0,  "Keep the display on" },
+  {"powerplan", 'p', 0, 0,  "Manipulate the active power plan" },
+  { 0 }
+};
+     
+/* Argument structure, for communication from parse_opt to main */
+struct arguments
+{
+  char *args[2];                /* arg1 & arg2 */
+  int silent, verbose;
+  char *output_file;
+};
 
-/*  argp_parse(&argp, argc, argv, 0, 0, 0);*/
+/* argp parser */
+static error_t parse_opt(int, char *, struct argp_state *);
+static struct argp argp = {options, parse_opt, args_doc, doc};
+
+
+/*
+ * main()
+ */
+
+int
+main(int argc, char *argv[]) {
+
+  argp_parse(&argp, argc, argv, 0, 0, 0);
 
   int execution_state = ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED;
   pid_t child;
@@ -37,7 +63,7 @@ int main(int argc, char *argv[]) {
   /* Inhibit sleep/hibernation */
   if (! SetThreadExecutionState(execution_state)) {
     fprintf(stderr, "%s: Error: sleep inhibition failed", argv[0]);
-	exit(EXIT_FAILURE);
+    exit(EXIT_FAILURE);
   }
   
   /* Start child process */
@@ -55,4 +81,43 @@ int main(int argc, char *argv[]) {
   /* Restore power options if necessary */
 
   exit(EXIT_SUCCESS);
+}
+
+/*
+ * parse_opt():  Parse a single option.
+ */
+
+static error_t
+parse_opt (int key, char *arg, struct argp_state *state)
+{
+  struct arguments *arguments = state->input;
+
+  switch (key) {
+    case 'q':
+    case 's':
+      arguments->silent = 1;
+      break;
+    case 'v':
+      arguments->verbose = 1;
+      break;
+    case 'o':
+      arguments->output_file = arg;
+      break;
+
+    case ARGP_KEY_ARG:
+      arguments->args[state->arg_num] = arg;
+
+      break;
+
+    case ARGP_KEY_END:
+      if (state->arg_num < 2)
+        /* Not enough arguments. */
+        argp_usage (state);
+      break;
+
+    default:
+      return ARGP_ERR_UNKNOWN;
+    }
+
+  return 0;
 }

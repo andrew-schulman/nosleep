@@ -7,7 +7,7 @@ nosleep - Run a program while inhibiting computer sleep or hibernation
 
 .SH SYNOPSIS
 .B nosleep
-[--awaymode|--powerplan]
+[--awaymode|--display|--powerplan]
 .I command
 .RI [ args ]
 
@@ -41,9 +41,9 @@ disadvantages and risks:
 
 .TP
 1.
-If the host is running on battery, preventing sleep or hibernation could
-cause it to run out of power and shut down uncleanly, potentially causing
-data loss.
+If the host is running on battery, preventing sleep, hibernation, or display
+shutoff could cause the host to run out of power and shut down uncleanly,
+potentially causing data loss.
 
 .TP
 2.
@@ -77,6 +77,10 @@ by entering true sleep."  Use your power for good, not evil.
 
 On Windows Server 2003 and Windows XP/2000, away mode is not supported and this
 option will have no effect.
+
+.TP
+--display
+Prevent the display from dimming or shutting down during idle periods.
 
 .TP
 --powerplan

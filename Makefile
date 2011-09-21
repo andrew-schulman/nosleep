@@ -6,12 +6,13 @@ SRC := nosleep.c
 TGT := nosleep
 
 CC := gcc
-CFLAGS := -DWINVER=0x500
-LDFLAGS :=
+CFLAGS  := -DWINVER=0x500
+LDFLAGS := -largp
 
 OBJ := $(SRC:.c=.o)
 
-$(TGT): $(SRC)
+$(TGT): $(OBJ)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
 .PHONY: clean
 clean:
