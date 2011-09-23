@@ -74,7 +74,7 @@ main(int argc, char *argv[]) {
   argp_program_version = version;
   argp_program_bug_address = bug_address;
 
-  if (!argp_parse(&argp, argc, argv, 0, &firstarg, &poweropts))
+  if (argp_parse(&argp, argc, argv, 0, &firstarg, &poweropts))
     exit(NOSLEEP_EXIT_ERROR);
 
   /* Filter AC-only options, if AC power isn't on */
@@ -84,9 +84,6 @@ main(int argc, char *argv[]) {
     poweropts.display   &= ~NOSLEEP_OPTION_AC_ONLY;
     poweropts.powerplan &= ~NOSLEEP_OPTION_AC_ONLY;
   }
-  fprintf(stdout, "idlesleep=%i\nawaymode=%i\ndisplay=%i\npowerplan=%i",
-      poweropts.idlesleep, poweropts.awaymode, poweropts.display, poweropts.powerplan);
-  exit(0);
 
   /* Inhibit sleep/hibernation */
   switch (set_sleep_inhibition_state(poweropts, error, sizeof(error))) {
@@ -142,26 +139,31 @@ main(int argc, char *argv[]) {
  */
 
 static error_t parse_opt(int key, char *arg, struct argp_state *state) {
-  struct power_options *arguments = state->input;
+
+  static int ac_state = NOSLEEP_OPTION_ON;
+  struct power_options *poweropts = state->input;
 
   switch (key) {
   case 'a':
-    arguments->awaymode = 1;
+    poweropts->awaymode  = ac_state;
     break;
   case 'd':
-    arguments->display = 1;
+    poweropts->display   = ac_state;
     break;
   case 'p':
-    arguments->powerplan = 1;
+    poweropts->powerplan = ac_state;
+    break;
+  case 'i':
+    ac_state = NOSLEEP_OPTION_AC_ONLY;
     break;
 
   case ARGP_KEY_ARG:
+  case ARGP_KEY_ARGS:
+    return ARGP_ERR_UNKNOWN;
     break;
 
-  case ARGP_KEY_END:
-    if (state->arg_num < 2)
-      /* Not enough arguments. */
-      argp_usage(state);
+  case ARGP_KEY_NO_ARGS:
+    argp_usage(state);
     break;
 
   default:
