@@ -7,7 +7,7 @@ nosleep - Run a program while inhibiting computer sleep or hibernation
 
 .SH SYNOPSIS
 .B nosleep
-[--awaymode|--display|--powerplan]
+[OPTIONS]
 .I command
 .RI [ args ]
 
@@ -57,7 +57,8 @@ only works some of the time.
 still can't guarantee that the
 .I command
 will complete, since it can't prevent users or other processes from shutting
-down the host.  For example, a user who tries and fails to put the computer to sleep may decide to shut it down instead.
+down the host.  For example, a user who tries and fails to put the computer to
+sleep may decide to shut it down instead.
 
 .LP
 The author disclaims all responsibility for any losses you may incur by using
@@ -75,22 +76,30 @@ do not require critical background processing or that run on portable computers
 should not enable away mode because it prevents the system from conserving power
 by entering true sleep."  Use your power for good, not evil.
 
-On Windows Server 2003 and Windows XP/2000, away mode is not supported and this
-option will have no effect.
+.I Windows Server 2003 and Windows XP/2000:
+Away mode is not supported.  This option will have no effect.
 
 .TP
 --display
-Prevent the display from dimming or shutting down during idle periods.
+Prevent the display from dimming or turning off during idle periods.
+
+.TP
+--ifacpower
+Options that follow this one will only take effect if the host is running on AC
+power. The AC power state is only checked when
+.B nosleep
+starts; if AC power is removed after that,
+.B nosleep
+won't detect it.
 
 .TP
 --powerplan
 Activate a temporary power management plan that prevents sleep and
 hibernation, even under typical events such as closing the laptop lid or
-pressing the power button.  The original power plan will be restored when the
+pressing the power button.  The original power plan will be restored when
 .I command
-finishes executing.  This is the most aggressive option.  In addition to the
-warnings above, this option carries the additional risk that the temporary power
-scheme will be left in place if
+finishes executing.  This is the most aggressive option.  It carries the
+additional risk that the temporary power scheme will be left in place if
 .B nosleep
 is killed before
 .I command
@@ -101,12 +110,24 @@ privileges.  In that case
 .B nosleep
 will emit an error message but continue running in its default mode.
 
-.SH EXAMPLE
+.SH EXAMPLES
 .IP
 nosleep rsync dir1 dir2
 .LP
-will run rsync to synchronize dir1 and dir2, inhibiting computer sleep until
-rsync exits.
+will run rsync dir1 dir2, preventing idle sleep until rsync exits.
+.IP
+nosleep --ifacpower --display rsync dir1 dir2
+.LP
+will prevent idle sleep as before, and will also keep the display from turning
+off if the computer is running on AC power when
+.B nosleep
+starts.
+
+.SH RETURN VALUE
+.B nosleep
+returns the exit value of
+.IR command ,
+or 128 if it encounters a fatal error.
 
 .SH BUGS
 Please send bug reports to the Cygwin mailing list <cygwin@cygwin.com>.
