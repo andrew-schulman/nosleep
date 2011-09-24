@@ -27,6 +27,12 @@
 #include <windows.h>
 #include "nosleep.h"
 
+/* ES_AWAYMODE_REQUIRED is undefined in Windows XP and earlier.
+ * Define it here only for compilation. */
+#ifndef ES_AWAYMODE_REQUIRED
+#define ES_AWAYMODE_REQUIRED 0x00000040
+#endif
+
 bool
 get_AC_power_state() {
   SYSTEM_POWER_STATUS *lpSystemPowerStatus;
@@ -39,7 +45,15 @@ get_AC_power_state() {
 enum power_return
 set_sleep_inhibition_state(struct power_options poweropts,
     char *error, int error_len) {
-  int execution_state = ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED;
+  int execution_state = 0;
+
+  if (poweropts.noidlesleep)
+    execution_state |= ES_CONTINUOUS | ES_SYSTEM_REQUIRED;
+  if (poweropts.awaymode)
+    execution_state |= ES_CONTINUOUS | ES_AWAYMODE_REQUIRED;
+  if (poweropts.display)
+    execution_state |= ES_CONTINUOUS | ES_DISPLAY_REQUIRED;
+
   SetThreadExecutionState(execution_state);
   return NOSLEEP_OP_SUCCESS;
 }

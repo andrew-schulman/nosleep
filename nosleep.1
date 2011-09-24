@@ -76,6 +76,10 @@ do not require critical background processing or that run on portable computers
 should not enable away mode because it prevents the system from conserving power
 by entering true sleep."  Use your power for good, not evil.
 
+Away mode is only available if it's allowed by the active power plan, and there
+is no direct way for the user to determine if this is the case.  For more
+information see the section "Away Mode and Windows Vista Power Policy" in [2].
+
 .I Windows Server 2003 and Windows XP/2000:
 Away mode is not supported.  This option will have no effect.
 
@@ -136,6 +140,8 @@ Please send bug reports to the Cygwin mailing list <cygwin@cygwin.com>.
 .TP
 [1]
 http://msdn.microsoft.com/en-us/library/aa373208(VS.85).aspx
-
+.TP
+[2]
+http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/AwayMode.doc
 .SH AUTHOR
 Andrew E. Schulman <schulman.andrew@epa.gov>

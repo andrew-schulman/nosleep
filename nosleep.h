@@ -34,10 +34,10 @@
 /* Set of power and sleep options: */
 struct power_options {
 	int
-    awaymode,   /* force away mode instead of sleep mode */
-    display,    /* keep the display on */
-    idlesleep,  /* inhibit sleep during idle periods */
-    powerplan;  /* manipulate the active power plan to disable sleep */
+    awaymode,     /* force away mode instead of sleep mode */
+    display,      /* keep the display on */
+    noidlesleep,  /* inhibit sleep during idle periods */
+    powerplan;    /* manipulate the active power plan to disable sleep */
 };
 
 /* Return value of functions that manipulate power states: */
@@ -45,8 +45,8 @@ enum power_return {
   NOSLEEP_OP_SUCCESS,  /* Operation succeeded. */
   NOSLEEP_OP_WARNING,  /* Operation failed, but a workaround or
     fallback was implemented.  Execution should continue. */
-  NOSLEEP_OP_ERROR,     /* Operation failed, and something bad
-    happened.  Program should exit immediately. */
+  NOSLEEP_OP_ERROR,    /* Operation failed unrecoverably.
+    Program should exit immediately. */
 };
 
 /**

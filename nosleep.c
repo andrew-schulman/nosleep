@@ -45,7 +45,7 @@ static struct argp_option options[] = {
 static error_t parse_opt(int, char *, struct argp_state *);
 static struct argp argp = {options, parse_opt, args_doc, doc};
 
-/* Option states, per the command line */
+/* Option states, to be determined on the command line */
 #define NOSLEEP_OPTION_OFF     0
 #define NOSLEEP_OPTION_ON      1
 #define NOSLEEP_OPTION_AC_ONLY 2
@@ -66,10 +66,10 @@ main(int argc, char *argv[]) {
   int firstarg, child_status, i;
 
   /* Process command-line options */
-  poweropts.idlesleep = NOSLEEP_OPTION_ON;
-  poweropts.awaymode  = NOSLEEP_OPTION_OFF;
-  poweropts.display   = NOSLEEP_OPTION_OFF;
-  poweropts.powerplan = NOSLEEP_OPTION_OFF;
+  poweropts.noidlesleep = NOSLEEP_OPTION_ON;
+  poweropts.awaymode    = NOSLEEP_OPTION_OFF;
+  poweropts.display     = NOSLEEP_OPTION_OFF;
+  poweropts.powerplan   = NOSLEEP_OPTION_OFF;
 
   argp_program_version = version;
   argp_program_bug_address = bug_address;
@@ -77,12 +77,12 @@ main(int argc, char *argv[]) {
   if (argp_parse(&argp, argc, argv, 0, &firstarg, &poweropts))
     exit(NOSLEEP_EXIT_ERROR);
 
-  /* Filter AC-only options, if AC power isn't on */
+  /* Filter out AC-only options, if AC power isn't on */
   if (!get_AC_power_state()) {
-    poweropts.idlesleep &= ~NOSLEEP_OPTION_AC_ONLY;
-    poweropts.awaymode  &= ~NOSLEEP_OPTION_AC_ONLY;
-    poweropts.display   &= ~NOSLEEP_OPTION_AC_ONLY;
-    poweropts.powerplan &= ~NOSLEEP_OPTION_AC_ONLY;
+    poweropts.noidlesleep &= ~NOSLEEP_OPTION_AC_ONLY;
+    poweropts.awaymode    &= ~NOSLEEP_OPTION_AC_ONLY;
+    poweropts.display     &= ~NOSLEEP_OPTION_AC_ONLY;
+    poweropts.powerplan   &= ~NOSLEEP_OPTION_AC_ONLY;
   }
 
   /* Inhibit sleep/hibernation */
@@ -159,6 +159,7 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
 
   case ARGP_KEY_ARG:
   case ARGP_KEY_ARGS:
+    /* don't handle non-option arguments here; send them back to main() */
     return ARGP_ERR_UNKNOWN;
     break;
 
