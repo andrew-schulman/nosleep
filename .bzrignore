@@ -1,2 +1,4 @@
 nosleep
 *.exe
+.cproject
+.project
