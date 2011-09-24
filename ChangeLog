@@ -1,0 +1,9 @@
+Change log file for nosleep
+
+2011-09-22  Version 0.1.1
+* Add README and ChangeLog.
+
+2011-09-22  Version 0.1
+* Initial release:
+  * Cygwin only.
+  * All options implemented except --powerplan.

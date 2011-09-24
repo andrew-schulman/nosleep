@@ -27,7 +27,7 @@
 #include "nosleep.h"
 
 /* Program docs */
-static char version[]     = "nosleep v0.1 | Copyright 2011 Andrew E. Schulman";
+static char version[]     = "nosleep v0.1.1 | Copyright 2011 Andrew E. Schulman";
 static char bug_address[] = "the Cygwin mailing list <cygwin@cygwin.com>";
 static char doc[]         = "Run a command while inhibiting computer sleep or hibernation.";
 static char args_doc[]    = "command [args]"; /* non-option arguments */
