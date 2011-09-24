@@ -36,8 +36,7 @@ struct power_options {
 	int
     awaymode,     /* force away mode instead of sleep mode */
     display,      /* keep the display on */
-    noidlesleep,  /* inhibit sleep during idle periods */
-    powerplan;    /* manipulate the active power plan to disable sleep */
+    noidlesleep;  /* inhibit sleep during idle periods */
 };
 
 /* Return value of functions that manipulate power states: */

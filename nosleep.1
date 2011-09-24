@@ -96,24 +96,6 @@ starts; if AC power is removed after that,
 .B nosleep
 won't detect it.
 
-.TP
---powerplan
-Activate a temporary power management plan that prevents sleep and
-hibernation, even under typical events such as closing the laptop lid or
-pressing the power button.  The original power plan will be restored when
-.I command
-finishes executing.  This is the most aggressive option.  It carries the
-additional risk that the temporary power scheme will be left in place if
-.B nosleep
-is killed before
-.I command
-completes, for example if the power is interrupted (battery ran out?).
-
-The --powerplan option may fail if you don't have sufficient administrative
-privileges.  In that case
-.B nosleep
-will emit an error message but continue running in its default mode.
-
 .SH EXAMPLES
 .IP
 nosleep rsync dir1 dir2

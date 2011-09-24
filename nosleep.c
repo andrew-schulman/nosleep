@@ -37,7 +37,6 @@ static struct argp_option options[] = {
   { "awaymode",  'a', 0, 0, "Force away mode instead of sleep mode" },
   { "display",   'd', 0, 0, "Keep the display on" },
   { "ifacpower", 'i', 0, 0, "Following options only apply if AC power is on" },
-  { "powerplan", 'p', 0, 0, "Disable sleep in the active power plan" },
   { 0 }
 };
 
@@ -69,7 +68,6 @@ main(int argc, char *argv[]) {
   poweropts.noidlesleep = NOSLEEP_OPTION_ON;
   poweropts.awaymode    = NOSLEEP_OPTION_OFF;
   poweropts.display     = NOSLEEP_OPTION_OFF;
-  poweropts.powerplan   = NOSLEEP_OPTION_OFF;
 
   argp_program_version = version;
   argp_program_bug_address = bug_address;
@@ -82,7 +80,6 @@ main(int argc, char *argv[]) {
     poweropts.noidlesleep &= ~NOSLEEP_OPTION_AC_ONLY;
     poweropts.awaymode    &= ~NOSLEEP_OPTION_AC_ONLY;
     poweropts.display     &= ~NOSLEEP_OPTION_AC_ONLY;
-    poweropts.powerplan   &= ~NOSLEEP_OPTION_AC_ONLY;
   }
 
   /* Inhibit sleep/hibernation */
@@ -149,9 +146,6 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
     break;
   case 'd':
     poweropts->display   = ac_state;
-    break;
-  case 'p':
-    poweropts->powerplan = ac_state;
     break;
   case 'i':
     ac_state = NOSLEEP_OPTION_AC_ONLY;
