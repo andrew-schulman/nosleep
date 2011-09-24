@@ -45,7 +45,7 @@ static struct argp_option options[] = {
 static error_t parse_opt(int, char *, struct argp_state *);
 static struct argp argp = {options, parse_opt, args_doc, doc};
 
-/* Option states, to be determined on the command line */
+/* Option states, as determined on the command line */
 #define NOSLEEP_OPTION_OFF     0
 #define NOSLEEP_OPTION_ON      1
 #define NOSLEEP_OPTION_AC_ONLY 2

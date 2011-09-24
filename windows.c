@@ -61,5 +61,8 @@ set_sleep_inhibition_state(struct power_options poweropts,
 enum power_return
 clear_sleep_inhibition_state(struct power_options poweropts,
     char *error, int error_len) {
+	/* It's probably not necessary to reset the power options in
+	 * Windows, but there's no harm in doing so. */
+  SetThreadExecutionState(ES_CONTINUOUS);
   return NOSLEEP_OP_SUCCESS;
 }
