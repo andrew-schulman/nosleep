@@ -74,7 +74,7 @@ main(int argc, char *argv[]) {
   argp_program_version = version;
   argp_program_bug_address = bug_address;
 
-  if (argp_parse(&argp, argc, argv, 0, &firstarg, &poweropts))
+  if (argp_parse(&argp, argc, argv, ARGP_IN_ORDER, &firstarg, &poweropts))
     exit(NOSLEEP_EXIT_ERROR);
 
   /* Filter out AC-only options, if AC power isn't on */
