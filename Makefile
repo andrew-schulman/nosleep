@@ -5,9 +5,9 @@
 SRC := nosleep.c windows.c
 TGT := nosleep
 
-CC := gcc
-CFLAGS  :=
-LDFLAGS := -largp
+CC      := gcc
+CFLAGS  += -std=c99
+LDFLAGS += -largp
 
 windows.o : CFLAGS += -DWINVER=0x500
 
