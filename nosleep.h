@@ -70,7 +70,7 @@ get_AC_power_state();
  *   error = buffer to receive an error message.
  *   error_len = length of error buffer.
  * Return:
- *   A power_return value for whether the operation succeeded.
+ *   An op_return value for whether the operation succeeded.
  * Side effects:
  *   If the operation fails (fatally or non-fatally), write an error
  *   message to the error buffer.

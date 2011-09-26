@@ -135,7 +135,8 @@ main(int argc, char *argv[]) {
  * parse_opt():  Parse a single option.
  */
 
-static error_t parse_opt(int key, char *arg, struct argp_state *state) {
+static error_t
+parse_opt(int key, char *arg, struct argp_state *state) {
 
   static int ac_state = NOSLEEP_OPTION_ON;
   struct power_options *poweropts = state->input;

@@ -56,8 +56,8 @@ set_sleep_inhibition_state(struct power_options poweropts,
     execution_state |= ES_CONTINUOUS | ES_DISPLAY_REQUIRED;
 
   if (!SetThreadExecutionState(execution_state)) {
-    snprintf(error, error_len, "Unable to inhibit sleep");
-    return NOSLEEP_OP_ERROR;
+    snprintf(error, error_len, "Failed to inhibit sleep. Continuing execution with sleep not inhibited.");
+    return NOSLEEP_OP_WARNING;
   }
   return NOSLEEP_OP_SUCCESS;
 }
@@ -65,9 +65,9 @@ set_sleep_inhibition_state(struct power_options poweropts,
 enum op_return
 clear_sleep_inhibition_state(struct power_options poweropts,
     char *error, int error_len) {
-	/* It's probably not necessary to reset the power options in
-	 * Windows, but there's no harm in trying. But neither is it
-     * worth bothering to check if we succeeded. */
+  /* It's probably not necessary to reset the power options in
+   * Windows, but there's no harm in trying. But neither is it
+   * worth bothering to check if we succeeded. */
   SetThreadExecutionState(ES_CONTINUOUS);
   return NOSLEEP_OP_SUCCESS;
 }
