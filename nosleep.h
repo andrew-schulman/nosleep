@@ -40,12 +40,13 @@ struct power_options {
 };
 
 /* Return value of functions that manipulate power states: */
-enum power_return {
+enum op_return {
   NOSLEEP_OP_SUCCESS,  /* Operation succeeded. */
-  NOSLEEP_OP_WARNING,  /* Operation failed, but a workaround or
-    fallback was implemented.  Execution should continue. */
-  NOSLEEP_OP_ERROR,    /* Operation failed unrecoverably.
-    Program should exit immediately. */
+  NOSLEEP_OP_WARNING,  /* Operation failed, but a workaround or fallback
+    was implemented that still allows at least some sleep inhibition.
+    Execution should continue. */
+  NOSLEEP_OP_ERROR,    /* Operation failed, and either something bad happened
+    or no sleep inhibition is possible.  Program should exit immediately. */
 };
 
 /**
@@ -74,7 +75,7 @@ get_AC_power_state();
  *   If the operation fails (fatally or non-fatally), write an error
  *   message to the error buffer.
  */
-enum power_return
+enum op_return
 set_sleep_inhibition_state(struct power_options poweropts, char *error,
     int error_len);
 
@@ -86,7 +87,7 @@ set_sleep_inhibition_state(struct power_options poweropts, char *error,
  *
  * Inputs/Returns/Side effects: same as for set_sleep_inhibition_state().
  */
-enum power_return
+enum op_return
 clear_sleep_inhibition_state(struct power_options poweropts, char *error,
     int error_len);
 

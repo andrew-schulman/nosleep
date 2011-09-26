@@ -24,6 +24,7 @@
 /* Copyright 2011 Andrew E. Schulman */
 
 #include <stdbool.h>
+#include <stdio.h>
 #include <windows.h>
 #include "nosleep.h"
 
@@ -42,7 +43,7 @@ get_AC_power_state() {
   return false;
 }
 
-enum power_return
+enum op_return
 set_sleep_inhibition_state(struct power_options poweropts,
     char *error, int error_len) {
   int execution_state = 0;
@@ -54,15 +55,19 @@ set_sleep_inhibition_state(struct power_options poweropts,
   if (poweropts.display)
     execution_state |= ES_CONTINUOUS | ES_DISPLAY_REQUIRED;
 
-  SetThreadExecutionState(execution_state);
+  if (!SetThreadExecutionState(execution_state)) {
+    snprintf(error, error_len, "Unable to inhibit sleep");
+    return NOSLEEP_OP_ERROR;
+  }
   return NOSLEEP_OP_SUCCESS;
 }
 
-enum power_return
+enum op_return
 clear_sleep_inhibition_state(struct power_options poweropts,
     char *error, int error_len) {
 	/* It's probably not necessary to reset the power options in
-	 * Windows, but there's no harm in doing so. */
+	 * Windows, but there's no harm in trying. But neither is it
+     * worth bothering to check if we succeeded. */
   SetThreadExecutionState(ES_CONTINUOUS);
   return NOSLEEP_OP_SUCCESS;
 }
