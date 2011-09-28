@@ -76,7 +76,7 @@ main(int argc, char *argv[]) {
     exit(NOSLEEP_EXIT_ERROR);
 
   /* Filter out AC-only options, if AC power isn't on */
-  if (!get_AC_power_state()) {
+  if (!is_AC_power_on()) {
     poweropts.noidlesleep &= ~NOSLEEP_OPTION_AC_ONLY;
     poweropts.awaymode    &= ~NOSLEEP_OPTION_AC_ONLY;
     poweropts.display     &= ~NOSLEEP_OPTION_AC_ONLY;

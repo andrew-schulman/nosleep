@@ -50,7 +50,7 @@ enum op_return {
 };
 
 /**
- * get_AC_power_state()
+ * is_AC_power_on()
  *
  * Return:
  *  true  if the host is known to be running on AC power;
@@ -58,7 +58,7 @@ enum op_return {
  *        AC power state can't be determined.
  */
 bool
-get_AC_power_state();
+is_AC_power_on();
 
 /**
  * set_sleep_inhibition_state()

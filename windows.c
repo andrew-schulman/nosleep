@@ -35,7 +35,7 @@
 #endif
 
 bool
-get_AC_power_state() {
+is_AC_power_on() {
   SYSTEM_POWER_STATUS *lpSystemPowerStatus;
   if (GetSystemPowerStatus(lpSystemPowerStatus)
       && lpSystemPowerStatus->ACLineStatus == 1)
