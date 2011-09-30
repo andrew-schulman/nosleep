@@ -1,5 +1,9 @@
 Change log file for nosleep
 
+2011-09-30  Version 0.1.4
+* Warn but continue executing if sleep inhibition fails
+* Add first functional test
+
 2011-09-24  Version 0.1.3
 * Remove all implementation of --powerplan option.  That option is targeted
   for the 0.2 series.
