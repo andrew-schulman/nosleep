@@ -17,12 +17,16 @@ windows.o : CFLAGS += -DWINVER=0x500
 
 OBJ := $(SRC:.c=.o)
 
+.PHONY: all check test install clean
+
 all: $(TGT)
 
 $(TGT): $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-.PHONY: clean install
+check: test
+test: $(TGT)
+	cd test && make
 
 install: $(TGT)
 	mkdir -p $(DESTDIR)/usr/bin $(DESTDIR)/usr/share/man/man1 $(DESTDIR)/usr/share/doc/nosleep $(DESTDIR)/usr/share/doc/Cygwin
