@@ -1,16 +1,19 @@
 Change log file for nosleep
 
+2011-11-12  Version 0.1.5
+* Fix Possible crash in is_AC_power_on(). (#893960; by Christian Franke)
+
 2011-09-30  Version 0.1.4
-* Warn but continue executing if sleep inhibition fails
-* Add first functional test
+* Warn but continue executing if sleep inhibition fails.
+* Add first functional test.
 
 2011-09-24  Version 0.1.3
 * Remove all implementation of --powerplan option.  That option is targeted
   for the 0.2 series.
 
 2011-09-24  Version 0.1.2
-* Fix reordering of command line arguments
-* Add basic make install target
+* Fix reordering of command line arguments.
+* Add basic make install target.
 
 2011-09-22  Version 0.1.1
 * Add README and ChangeLog.
@@ -19,3 +22,4 @@ Change log file for nosleep
 * Initial release:
   * Cygwin only.
   * All options implemented except --powerplan.
+
