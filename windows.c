@@ -36,9 +36,9 @@
 
 bool
 is_AC_power_on() {
-  SYSTEM_POWER_STATUS *lpSystemPowerStatus;
-  if (GetSystemPowerStatus(lpSystemPowerStatus)
-      && lpSystemPowerStatus->ACLineStatus == 1)
+  SYSTEM_POWER_STATUS SystemPowerStatus;
+  if (GetSystemPowerStatus(&SystemPowerStatus)
+      && SystemPowerStatus.ACLineStatus == 1)
     return true;
   return false;
 }
