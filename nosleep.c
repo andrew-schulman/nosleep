@@ -27,8 +27,8 @@
 #include "nosleep.h"
 
 /* Program docs */
-static char version[]     = "nosleep v0.1.5 | Copyright 2011 Andrew E. Schulman";
-static char bug_address[] = "the Cygwin mailing list <cygwin@cygwin.com>";
+const char *argp_program_version = "nosleep v0.1.5 | Copyright 2011 Andrew E. Schulman";
+const char *argp_program_bug_address = "the Cygwin mailing list <cygwin@cygwin.com>";
 static char doc[]         = "Run a command while inhibiting computer sleep or hibernation.";
 static char args_doc[]    = "command [args]"; /* non-option arguments */
 
@@ -68,9 +68,6 @@ main(int argc, char *argv[]) {
   poweropts.noidlesleep = NOSLEEP_OPTION_ON;
   poweropts.awaymode    = NOSLEEP_OPTION_OFF;
   poweropts.display     = NOSLEEP_OPTION_OFF;
-
-  argp_program_version = version;
-  argp_program_bug_address = bug_address;
 
   if (argp_parse(&argp, argc, argv, ARGP_IN_ORDER, &firstarg, &poweropts))
     exit(NOSLEEP_EXIT_ERROR);
