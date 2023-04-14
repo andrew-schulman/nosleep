@@ -1,0 +1,87 @@
+# @configure_input@
+
+# Package-specific substitution variables
+package = @PACKAGE_NAME@
+version = @PACKAGE_VERSION@
+distdir = @PACKAGE_TARNAME@-$(version)
+
+# Prefix-specific substitution variables
+prefix      = @prefix@
+exec_prefix = @exec_prefix@
+bindir      = @bindir@
+datarootdir = @datarootdir@
+docdir      = @docdir@
+mandir      = @mandir@
+man1dir     = @mandir@/man1
+
+# VPATH-specific substitution variables
+srcdir      = @srcdir@
+VPATH       = @srcdir@
+
+# Tool-specific substitution variables
+CC              = @CC@
+CFLAGS          = @CFLAGS@
+CPPFLAGS        = @CPPFLAGS@
+INSTALL         = @INSTALL@
+INSTALL_DATA    = @INSTALL_DATA@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_SCRIPT  = @INSTALL_SCRIPT@
+
+all nosleep clean:
+	cd src && $(MAKE) $@
+
+dist: $(distdir).tar.bz2
+
+$(distdir).tar.bz2: $(distdir)
+	tar chof - $(distdir) | bzip2 > $(distdir).tar.bz2
+	rm -rf $(distdir)
+
+$(distdir): clean FORCE
+	mkdir .dist
+	cp -r $(srcdir)/* .dist
+	mv .dist $(distdir)
+
+FORCE:
+	-rm $(distdir).tar.bz2 >/dev/null 2>&1
+	-rm -rf $(distdir) .dist >/dev/null 2>&1
+
+distcheck: $(distdir).tar.bz2
+	bunzip2 < $(distdir).tar.bz2 | tar xvf -
+	cd $(distdir) && ./configure
+	cd $(distdir) && $(MAKE) all
+	cd $(distdir) && $(MAKE) check
+	cd $(distdir) && $(MAKE) DESTDIR=$${PWD}/_inst install
+	cd $(distdir) && $(MAKE) DESTDIR=$${PWD}/_inst uninstall
+	cd $(distdir) && $(MAKE) clean
+	rm -rf $(distdir)
+	@echo "*** Package $(distdir).tar.bz2 builds successfully."
+
+Makefile: Makefile.in config.status
+	./config.status $@
+
+config.status: configure
+	./config.status --recheck
+
+check test:
+	cd test && $(MAKE) $@
+
+install:
+	cd src && $(MAKE) $@
+	$(INSTALL) -d $(DESTDIR)$(man1dir) $(DESTDIR)$(docdir)
+	$(INSTALL_DATA) nosleep.1 $(DESTDIR)$(man1dir)
+	$(INSTALL_DATA) ChangeLog COPYING README $(DESTDIR)$(docdir)
+
+uninstall:
+	cd src && $(MAKE) $@
+	-rm -f \
+	  $(DESTDIR)$(man1dir)/nosleep.1 \
+	  $(DESTDIR)$(docdir)/ChangeLog \
+	  $(DESTDIR)$(docdir)/COPYING \
+	  $(DESTDIR)$(docdir)/README
+
+distclean: clean
+	cd src && $(MAKE) $@
+	cd test && $(MAKE) $@
+	-rm -f Makefile config.h config.log config.status
+
+.PHONY: all clean dist FORCE check test install uninstall
