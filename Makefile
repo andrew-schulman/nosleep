@@ -34,7 +34,7 @@ install: $(TGT)
 	chmod 0755 $(TGT)
 	cp $(TGT) $(DESTDIR)/usr/bin
 	cp nosleep.1 $(DESTDIR)/usr/share/man/man1
-	cp ChangeLog README $(DESTDIR)/usr/share/doc/nosleep
+	cp ChangeLog README.md $(DESTDIR)/usr/share/doc/nosleep
 
 clean:
 	rm -f $(TGT) *.o
