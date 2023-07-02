@@ -29,13 +29,12 @@ test: $(TGT)
 	cd test && make
 
 install: $(TGT)
-	mkdir -p $(DESTDIR)/usr/bin $(DESTDIR)/usr/share/man/man1 $(DESTDIR)/usr/share/doc/nosleep $(DESTDIR)/usr/share/doc/Cygwin
+	mkdir -p $(DESTDIR)/usr/bin $(DESTDIR)/usr/share/man/man1 $(DESTDIR)/usr/share/doc/nosleep
 	chmod 0644 *
 	chmod 0755 $(TGT)
 	cp $(TGT) $(DESTDIR)/usr/bin
 	cp nosleep.1 $(DESTDIR)/usr/share/man/man1
 	cp ChangeLog README $(DESTDIR)/usr/share/doc/nosleep
-	cp -f CYGWIN-PATCHES/README $(DESTDIR)/usr/share/doc/nosleep/README.Cygwin
 
 clean:
 	rm -f $(TGT) *.o
